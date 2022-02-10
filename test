@@ -1,0 +1,28 @@
+<html> <!-- this is the start of the html-->
+<body> <!-- the main body of the form -->
+
+<form action="file_upload.php" method="post" enctype="multipart/form-data">  <!--the action is where it will take the file to the file_upload php page. enctype is used to upload files-->
+<label for="file">Filename:</label> 
+<input type="file" name="file" id="file" /> <!-- this is where the user is to choose the file type they want to be stored when sent to the php script-->
+<br />
+<input type="submit"  name="submit"  value="Submit" /> <!-- this is the submit button th is done after the selecting a file-->
+</form> <!-- form is closed -->
+
+</body> <!-- body of the form is closed -->
+</html> <!-- closing html -->
+
+<?php // the php code start 
+	if($_FILES["file"]["error"]>0)	{ //checks if the error varible is greater then 0 if it is then an error has been found. a gloabal varible is used for the stored file 
+	echo "Error: ".$_FILES["file"]["error"]; // this line is to report back the error number 
+	} else { // else if there hasnt been any errors 
+		echo "File Name: ".$_FILES["file"]["name"]."<br />"; // this line  echos out the name of the file that the user has been selected 
+		echo "File Type: ".$_FILES["file"]["type"]."<br />"; // this line  echos out the type of the file for an example text file  
+		echo "File Size: ".$_FILES["file"]["size"]."<br />";  // this line echos the file size of the file thats choosen by the user
+		}
+		if(file_exists("fileupload/".$_FILES["file"]["name"])) { // checks if the file exists within the fileupload folder
+			echo $_FILES["file"]["name"]." already exists"; // tells the user the file is already in the folder 
+			} else {
+				move_uploaded_file($_FILES["file"]["tmp_name"],"fileupload/".$_FILES["file"]["name"]);
+				echo "Stored in"."fileupload/".$_FILES["file"]["name"];
+			}
+			?>
